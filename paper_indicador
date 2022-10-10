@@ -35,10 +35,10 @@ gsc_3_18['rank_spi']=gsc_3_18['spi_18'].rank(axis=0, ascending=False, method = '
 gsc_3_18['rank_gdp']=gsc_3_18['gdp_18'].rank(axis=0, ascending=False, method = 'max')
 gsc_3_18['rank_eci']=gsc_3_18['eci_18'].rank(axis=0, ascending=False, method = 'max')
 gsc_3_18
-
+AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 #FIGURA 1
-x = gsc_18_2['gdp_18']
-y = gsc_18_2['gsc']
+x = gsc_3_18['gdp_18']
+y = gsc_3_18['gsc']
 fig, ax = plt.subplots()
 ax.scatter(x, y, c="green", alpha=0.5)
 ax.set_xlabel("GDP per capita")
