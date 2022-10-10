@@ -1,0 +1,345 @@
+# IMPORTING DATASETS AND LIBRARIES
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+dados_novos = pd.read_stata("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/country_hsproduct4digit_year.dta")
+PUR_deg=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/deg_pur.xlsx")
+intensity=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/indicador_mar_22/intensity.xlsx")
+gdp_2018=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/indicador_mar_22/gdp.xlsx")
+policy=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/new/policy.xlsx")
+region=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/indicador_mar_22/reg.xlsx")
+SPI18=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/SPI.xlsx")
+eci18=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/eci.xlsx")
+
+dados_novos = dados_novos.iloc[:,[2,5,16,17,18]]
+PUR_deg['hs_product_code'] = PUR_deg['hs_product_code'].astype (str)
+dados=dados_novos.merge(PUR_deg, on="hs_product_code", how = "inner")
+dados=dados.loc[((dados.location_code != "ANT") & (dados.location_code != "ATF") & (dados.location_code != "ESH") & (dados.location_code != "WLF") & (dados.location_code != "SCG") & (dados.location_code != "SRB") & (dados.location_code != "ATA") & (dados.location_code != "HMD") & (dados.location_code != "MYT") & (dados.location_code != "UMI") & (dados.location_code != "VAT") & (dados.location_code != "BVT") & (dados.location_code != "SGS") & (dados.location_code != "CUW") & (dados.location_code != "VIR") & (dados.location_code != "SXM") & (dados.location_code != "SSD") & (dados.location_code != "GLP") & (dados.location_code != "GUF") & (dados.location_code != "MTQ") & (dados.location_code != "REU") & (dados.location_code != "MNE") & (dados.location_code != "BES") & (dados.location_code != "BLM"))]
+dados=dados.loc[((dados.year != 1994) & (dados.year != 2020) & (dados.year != 2019))]
+dados['rca'] = np.where(dados['export_rca']> 1, 1, 0)
+dados['p_d']= dados['pci'] * dados['degrees'] * dados['rca']
+
+dados
+d_18 = dados.loc[(dados.year == 2018)]
+d_17 = dados.loc[(dados.year == 2017)]
+d_16 = dados.loc[(dados.year == 2016)]
+d_15 = dados.loc[(dados.year == 2015)]
+d_14 = dados.loc[(dados.year == 2014)]
+d_13 = dados.loc[(dados.year == 2013)]
+d_12 = dados.loc[(dados.year == 2012)]
+d_11 = dados.loc[(dados.year == 2011)]
+d_10 = dados.loc[(dados.year == 2010)]
+d_09 = dados.loc[(dados.year == 2009)]
+d_08 = dados.loc[(dados.year == 2008)]
+d_07 = dados.loc[(dados.year == 2007)]
+d_06 = dados.loc[(dados.year == 2006)]
+d_05 = dados.loc[(dados.year == 2005)]
+d_04 = dados.loc[(dados.year == 2004)]
+d_03 = dados.loc[(dados.year == 2003)]
+d_02 = dados.loc[(dados.year == 2002)]
+d_01 = dados.loc[(dados.year == 2001)]
+d_00 = dados.loc[(dados.year == 2000)]
+d_99 = dados.loc[(dados.year == 1999)]
+d_98 = dados.loc[(dados.year == 1998)]
+d_97 = dados.loc[(dados.year == 1997)]
+d_96 = dados.loc[(dados.year == 1996)]
+d_95 = dados.loc[(dados.year == 1995)]
+
+
+
+d_18_17 = d_18.merge(d_17, on = ('location_code', 'hs_product_code'), how = "outer")
+d_17_16 = d_17.merge(d_16, on = ('location_code', 'hs_product_code'), how = "outer")
+d_16_15 = d_16.merge(d_15, on = ('location_code', 'hs_product_code'), how = "outer")
+d_15_14 = d_15.merge(d_14, on = ('location_code', 'hs_product_code'), how = "outer")
+d_14_13 = d_14.merge(d_13, on = ('location_code', 'hs_product_code'), how = "outer")
+d_13_12 = d_13.merge(d_12, on = ('location_code', 'hs_product_code'), how = "outer")
+d_12_11 = d_12.merge(d_11, on = ('location_code', 'hs_product_code'), how = "outer")
+d_11_10 = d_11.merge(d_10, on = ('location_code', 'hs_product_code'), how = "outer")
+d_10_09 = d_10.merge(d_09, on = ('location_code', 'hs_product_code'), how = "outer")
+d_09_08 = d_09.merge(d_08, on = ('location_code', 'hs_product_code'), how = "outer")
+d_08_07 = d_08.merge(d_07, on = ('location_code', 'hs_product_code'), how = "outer")
+d_07_06 = d_07.merge(d_06, on = ('location_code', 'hs_product_code'), how = "outer")
+d_06_05 = d_06.merge(d_05, on = ('location_code', 'hs_product_code'), how = "outer")
+d_05_04 = d_05.merge(d_04, on = ('location_code', 'hs_product_code'), how = "outer")
+d_04_03 = d_04.merge(d_03, on = ('location_code', 'hs_product_code'), how = "outer")
+d_03_02 = d_03.merge(d_02, on = ('location_code', 'hs_product_code'), how = "outer")
+d_02_01 = d_02.merge(d_01, on = ('location_code', 'hs_product_code'), how = "outer")
+d_01_00 = d_01.merge(d_00, on = ('location_code', 'hs_product_code'), how = "outer")
+d_00_99 = d_00.merge(d_99, on = ('location_code', 'hs_product_code'), how = "outer")
+d_99_98 = d_99.merge(d_98, on = ('location_code', 'hs_product_code'), how = "outer")
+d_98_97 = d_98.merge(d_97, on = ('location_code', 'hs_product_code'), how = "outer")
+d_97_96 = d_97.merge(d_96, on = ('location_code', 'hs_product_code'), how = "outer")
+d_96_95 = d_96.merge(d_95, on = ('location_code', 'hs_product_code'), how = "outer")
+
+d_18_17['novos'] =d_18_17.rca_x - d_18_17.rca_y
+d_17_16['novos'] =d_17_16.rca_x - d_17_16.rca_y
+d_16_15['novos'] =d_16_15.rca_x - d_16_15.rca_y
+d_15_14['novos'] =d_15_14.rca_x - d_15_14.rca_y
+d_14_13['novos'] =d_14_13.rca_x - d_14_13.rca_y
+d_13_12['novos'] =d_13_12.rca_x - d_13_12.rca_y
+d_12_11['novos'] =d_12_11.rca_x - d_12_11.rca_y
+d_11_10['novos'] =d_11_10.rca_x - d_11_10.rca_y
+d_10_09['novos'] =d_10_09.rca_x - d_10_09.rca_y
+d_09_08['novos'] =d_09_08.rca_x - d_09_08.rca_y
+d_08_07['novos'] =d_08_07.rca_x - d_08_07.rca_y
+d_07_06['novos'] =d_07_06.rca_x - d_07_06.rca_y
+d_06_05['novos'] =d_06_05.rca_x - d_06_05.rca_y
+d_05_04['novos'] =d_05_04.rca_x - d_05_04.rca_y
+d_04_03['novos'] =d_04_03.rca_x - d_04_03.rca_y
+d_03_02['novos'] =d_03_02.rca_x - d_03_02.rca_y
+d_02_01['novos'] =d_02_01.rca_x - d_02_01.rca_y
+d_01_00['novos'] =d_01_00.rca_x - d_01_00.rca_y
+d_00_99['novos'] =d_00_99.rca_x - d_00_99.rca_y
+d_99_98['novos'] =d_99_98.rca_x - d_99_98.rca_y
+d_98_97['novos'] =d_98_97.rca_x - d_98_97.rca_y
+d_97_96['novos'] =d_97_96.rca_x - d_97_96.rca_y
+d_96_95['novos'] =d_96_95.rca_x - d_96_95.rca_y
+d_96_95['novo_bi'] = np.where(d_96_95['novos'] == 1, 1, np.where(d_96_95['novos'] !=  1, 0,0))
+d_96_95['retired_bi'] = np.where(d_96_95['novos'] == -1, 1, np.where(d_96_95['novos'] !=  -1, 0,0))
+d_96_95['v1'] = d_96_95['novo_bi'] * d_96_95['pci_x']
+d_96_95['v2'] = d_96_95['novo_bi'] * d_96_95['degrees_x']
+d_96_95['v3'] = d_96_95['retired_bi'] * d_96_95['pci_y']
+d_96_95['v4'] = d_96_95['retired_bi'] * d_96_95['degrees_y']
+d_96_95['v5'] = d_96_95['v1'] - d_96_95['v3']
+d_96_95['v6'] = d_96_95['v2'] - d_96_95['v4']
+d_96_95['v7'] = d_96_95['v5'] * d_96_95['v6']
+d_96_95_pivot = (d_96_95.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_97_96['novo_bi'] = np.where(d_97_96['novos'] == 1, 1, np.where(d_97_96['novos'] !=  1, 0,0))
+d_97_96['retired_bi'] = np.where(d_97_96['novos'] == -1, 1, np.where(d_97_96['novos'] !=  -1, 0,0))
+d_97_96['v1'] = d_97_96['novo_bi'] * d_97_96['pci_x']
+d_97_96['v2'] = d_97_96['novo_bi'] * d_97_96['degrees_x']
+d_97_96['v3'] = d_97_96['retired_bi'] * d_97_96['pci_y']
+d_97_96['v4'] = d_97_96['retired_bi'] * d_97_96['degrees_y']
+d_97_96['v5'] = d_97_96['v1'] - d_97_96['v3']
+d_97_96['v6'] = d_97_96['v2'] - d_97_96['v4']
+d_97_96['v7'] = d_97_96['v5'] * d_97_96['v6']
+d_97_96_pivot = (d_97_96.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_98_97['novo_bi'] = np.where(d_98_97['novos'] == 1, 1, np.where(d_98_97['novos'] !=  1, 0,0))
+d_98_97['retired_bi'] = np.where(d_98_97['novos'] == -1, 1, np.where(d_98_97['novos'] !=  -1, 0,0))
+d_98_97['v1'] = d_98_97['novo_bi'] * d_98_97['pci_x']
+d_98_97['v2'] = d_98_97['novo_bi'] * d_98_97['degrees_x']
+d_98_97['v3'] = d_98_97['retired_bi'] * d_98_97['pci_y']
+d_98_97['v4'] = d_98_97['retired_bi'] * d_98_97['degrees_y']
+d_98_97['v5'] = d_98_97['v1'] - d_98_97['v3']
+d_98_97['v6'] = d_98_97['v2'] - d_98_97['v4']
+d_98_97['v7'] = d_98_97['v5'] * d_98_97['v6']
+d_98_97_pivot = (d_98_97.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_99_98['novo_bi'] = np.where(d_99_98['novos'] == 1, 1, np.where(d_99_98['novos'] !=  1, 0,0))
+d_99_98['retired_bi'] = np.where(d_99_98['novos'] == -1, 1, np.where(d_99_98['novos'] !=  -1, 0,0))
+d_99_98['v1'] = d_99_98['novo_bi'] * d_99_98['pci_x']
+d_99_98['v2'] = d_99_98['novo_bi'] * d_99_98['degrees_x']
+d_99_98['v3'] = d_99_98['retired_bi'] * d_99_98['pci_y']
+d_99_98['v4'] = d_99_98['retired_bi'] * d_99_98['degrees_y']
+d_99_98['v5'] = d_99_98['v1'] - d_99_98['v3']
+d_99_98['v6'] = d_99_98['v2'] - d_99_98['v4']
+d_99_98['v7'] = d_99_98['v5'] * d_99_98['v6']
+d_99_98_pivot = (d_99_98.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_00_99['novo_bi'] = np.where(d_00_99['novos'] == 1, 1, np.where(d_00_99['novos'] !=  1, 0,0))
+d_00_99['retired_bi'] = np.where(d_00_99['novos'] == -1, 1, np.where(d_00_99['novos'] !=  -1, 0,0))
+d_00_99['v1'] = d_00_99['novo_bi'] * d_00_99['pci_x']
+d_00_99['v2'] = d_00_99['novo_bi'] * d_00_99['degrees_x']
+d_00_99['v3'] = d_00_99['retired_bi'] * d_00_99['pci_y']
+d_00_99['v4'] = d_00_99['retired_bi'] * d_00_99['degrees_y']
+d_00_99['v5'] = d_00_99['v1'] - d_00_99['v3']
+d_00_99['v6'] = d_00_99['v2'] - d_00_99['v4']
+d_00_99['v7'] = d_00_99['v5'] * d_00_99['v6']
+d_00_99_pivot = (d_00_99.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_01_00['novo_bi'] = np.where(d_01_00['novos'] == 1, 1, np.where(d_01_00['novos'] !=  1, 0,0))
+d_01_00['retired_bi'] = np.where(d_01_00['novos'] == -1, 1, np.where(d_01_00['novos'] !=  -1, 0,0))
+d_01_00['v1'] = d_01_00['novo_bi'] * d_01_00['pci_x']
+d_01_00['v2'] = d_01_00['novo_bi'] * d_01_00['degrees_x']
+d_01_00['v3'] = d_01_00['retired_bi'] * d_01_00['pci_y']
+d_01_00['v4'] = d_01_00['retired_bi'] * d_01_00['degrees_y']
+d_01_00['v5'] = d_01_00['v1'] - d_01_00['v3']
+d_01_00['v6'] = d_01_00['v2'] - d_01_00['v4']
+d_01_00['v7'] = d_01_00['v5'] * d_01_00['v6']
+d_01_00_pivot = (d_01_00.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_02_01['novo_bi'] = np.where(d_02_01['novos'] == 1, 1, np.where(d_02_01['novos'] !=  1, 0,0))
+d_02_01['retired_bi'] = np.where(d_02_01['novos'] == -1, 1, np.where(d_02_01['novos'] !=  -1, 0,0))
+d_02_01['v1'] = d_02_01['novo_bi'] * d_02_01['pci_x']
+d_02_01['v2'] = d_02_01['novo_bi'] * d_02_01['degrees_x']
+d_02_01['v3'] = d_02_01['retired_bi'] * d_02_01['pci_y']
+d_02_01['v4'] = d_02_01['retired_bi'] * d_02_01['degrees_y']
+d_02_01['v5'] = d_02_01['v1'] - d_02_01['v3']
+d_02_01['v6'] = d_02_01['v2'] - d_02_01['v4']
+d_02_01['v7'] = d_02_01['v5'] * d_02_01['v6']
+d_02_01_pivot = (d_02_01.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_03_02['novo_bi'] = np.where(d_03_02['novos'] == 1, 1, np.where(d_03_02['novos'] !=  1, 0,0))
+d_03_02['retired_bi'] = np.where(d_03_02['novos'] == -1, 1, np.where(d_03_02['novos'] !=  -1, 0,0))
+d_03_02['v1'] = d_03_02['novo_bi'] * d_03_02['pci_x']
+d_03_02['v2'] = d_03_02['novo_bi'] * d_03_02['degrees_x']
+d_03_02['v3'] = d_03_02['retired_bi'] * d_03_02['pci_y']
+d_03_02['v4'] = d_03_02['retired_bi'] * d_03_02['degrees_y']
+d_03_02['v5'] = d_03_02['v1'] - d_03_02['v3']
+d_03_02['v6'] = d_03_02['v2'] - d_03_02['v4']
+d_03_02['v7'] = d_03_02['v5'] * d_03_02['v6']
+d_03_02_pivot = (d_03_02.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_04_03['novo_bi'] = np.where(d_04_03['novos'] == 1, 1, np.where(d_04_03['novos'] !=  1, 0,0))
+d_04_03['retired_bi'] = np.where(d_04_03['novos'] == -1, 1, np.where(d_04_03['novos'] !=  -1, 0,0))
+d_04_03['v1'] = d_04_03['novo_bi'] * d_04_03['pci_x']
+d_04_03['v2'] = d_04_03['novo_bi'] * d_04_03['degrees_x']
+d_04_03['v3'] = d_04_03['retired_bi'] * d_04_03['pci_y']
+d_04_03['v4'] = d_04_03['retired_bi'] * d_04_03['degrees_y']
+d_04_03['v5'] = d_04_03['v1'] - d_04_03['v3']
+d_04_03['v6'] = d_04_03['v2'] - d_04_03['v4']
+d_04_03['v7'] = d_04_03['v5'] * d_04_03['v6']
+d_04_03_pivot = (d_04_03.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_05_04['novo_bi'] = np.where(d_05_04['novos'] == 1, 1, np.where(d_05_04['novos'] !=  1, 0,0))
+d_05_04['retired_bi'] = np.where(d_05_04['novos'] == -1, 1, np.where(d_05_04['novos'] !=  -1, 0,0))
+d_05_04['v1'] = d_05_04['novo_bi'] * d_05_04['pci_x']
+d_05_04['v2'] = d_05_04['novo_bi'] * d_05_04['degrees_x']
+d_05_04['v3'] = d_05_04['retired_bi'] * d_05_04['pci_y']
+d_05_04['v4'] = d_05_04['retired_bi'] * d_05_04['degrees_y']
+d_05_04['v5'] = d_05_04['v1'] - d_05_04['v3']
+d_05_04['v6'] = d_05_04['v2'] - d_05_04['v4']
+d_05_04['v7'] = d_05_04['v5'] * d_05_04['v6']
+d_05_04_pivot = (d_05_04.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_06_05['novo_bi'] = np.where(d_06_05['novos'] == 1, 1, np.where(d_06_05['novos'] !=  1, 0,0))
+d_06_05['retired_bi'] = np.where(d_06_05['novos'] == -1, 1, np.where(d_06_05['novos'] !=  -1, 0,0))
+d_06_05['v1'] = d_06_05['novo_bi'] * d_06_05['pci_x']
+d_06_05['v2'] = d_06_05['novo_bi'] * d_06_05['degrees_x']
+d_06_05['v3'] = d_06_05['retired_bi'] * d_06_05['pci_y']
+d_06_05['v4'] = d_06_05['retired_bi'] * d_06_05['degrees_y']
+d_06_05['v5'] = d_06_05['v1'] - d_06_05['v3']
+d_06_05['v6'] = d_06_05['v2'] - d_06_05['v4']
+d_06_05['v7'] = d_06_05['v5'] * d_06_05['v6']
+d_06_05_pivot = (d_06_05.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_07_06['novo_bi'] = np.where(d_07_06['novos'] == 1, 1, np.where(d_07_06['novos'] !=  1, 0,0))
+d_07_06['retired_bi'] = np.where(d_07_06['novos'] == -1, 1, np.where(d_07_06['novos'] !=  -1, 0,0))
+d_07_06['v1'] = d_07_06['novo_bi'] * d_07_06['pci_x']
+d_07_06['v2'] = d_07_06['novo_bi'] * d_07_06['degrees_x']
+d_07_06['v3'] = d_07_06['retired_bi'] * d_07_06['pci_y']
+d_07_06['v4'] = d_07_06['retired_bi'] * d_07_06['degrees_y']
+d_07_06['v5'] = d_07_06['v1'] - d_07_06['v3']
+d_07_06['v6'] = d_07_06['v2'] - d_07_06['v4']
+d_07_06['v7'] = d_07_06['v5'] * d_07_06['v6']
+d_07_06_pivot = (d_07_06.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_08_07['novo_bi'] = np.where(d_08_07['novos'] == 1, 1, np.where(d_08_07['novos'] !=  1, 0,0))
+d_08_07['retired_bi'] = np.where(d_08_07['novos'] == -1, 1, np.where(d_08_07['novos'] !=  -1, 0,0))
+d_08_07['v1'] = d_08_07['novo_bi'] * d_08_07['pci_x']
+d_08_07['v2'] = d_08_07['novo_bi'] * d_08_07['degrees_x']
+d_08_07['v3'] = d_08_07['retired_bi'] * d_08_07['pci_y']
+d_08_07['v4'] = d_08_07['retired_bi'] * d_08_07['degrees_y']
+d_08_07['v5'] = d_08_07['v1'] - d_08_07['v3']
+d_08_07['v6'] = d_08_07['v2'] - d_08_07['v4']
+d_08_07['v7'] = d_08_07['v5'] * d_08_07['v6']
+d_08_07_pivot = (d_08_07.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_09_08['novo_bi'] = np.where(d_09_08['novos'] == 1, 1, np.where(d_09_08['novos'] !=  1, 0,0))
+d_09_08['retired_bi'] = np.where(d_09_08['novos'] == -1, 1, np.where(d_09_08['novos'] !=  -1, 0,0))
+d_09_08['v1'] = d_09_08['novo_bi'] * d_09_08['pci_x']
+d_09_08['v2'] = d_09_08['novo_bi'] * d_09_08['degrees_x']
+d_09_08['v3'] = d_09_08['retired_bi'] * d_09_08['pci_y']
+d_09_08['v4'] = d_09_08['retired_bi'] * d_09_08['degrees_y']
+d_09_08['v5'] = d_09_08['v1'] - d_09_08['v3']
+d_09_08['v6'] = d_09_08['v2'] - d_09_08['v4']
+d_09_08['v7'] = d_09_08['v5'] * d_09_08['v6']
+d_09_08_pivot = (d_09_08.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_10_09['novo_bi'] = np.where(d_10_09['novos'] == 1, 1, np.where(d_10_09['novos'] !=  1, 0,0))
+d_10_09['retired_bi'] = np.where(d_10_09['novos'] == -1, 1, np.where(d_10_09['novos'] !=  -1, 0,0))
+d_10_09['v1'] = d_10_09['novo_bi'] * d_10_09['pci_x']
+d_10_09['v2'] = d_10_09['novo_bi'] * d_10_09['degrees_x']
+d_10_09['v3'] = d_10_09['retired_bi'] * d_10_09['pci_y']
+d_10_09['v4'] = d_10_09['retired_bi'] * d_10_09['degrees_y']
+d_10_09['v5'] = d_10_09['v1'] - d_10_09['v3']
+d_10_09['v6'] = d_10_09['v2'] - d_10_09['v4']
+d_10_09['v7'] = d_10_09['v5'] * d_10_09['v6']
+d_10_09_pivot = (d_10_09.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_11_10['novo_bi'] = np.where(d_11_10['novos'] == 1, 1, np.where(d_11_10['novos'] !=  1, 0,0))
+d_11_10['retired_bi'] = np.where(d_11_10['novos'] == -1, 1, np.where(d_11_10['novos'] !=  -1, 0,0))
+d_11_10['v1'] = d_11_10['novo_bi'] * d_11_10['pci_x']
+d_11_10['v2'] = d_11_10['novo_bi'] * d_11_10['degrees_x']
+d_11_10['v3'] = d_11_10['retired_bi'] * d_11_10['pci_y']
+d_11_10['v4'] = d_11_10['retired_bi'] * d_11_10['degrees_y']
+d_11_10['v5'] = d_11_10['v1'] - d_11_10['v3']
+d_11_10['v6'] = d_11_10['v2'] - d_11_10['v4']
+d_11_10['v7'] = d_11_10['v5'] * d_11_10['v6']
+d_11_10_pivot = (d_11_10.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_12_11['novo_bi'] = np.where(d_12_11['novos'] == 1, 1, np.where(d_12_11['novos'] !=  1, 0,0))
+d_12_11['retired_bi'] = np.where(d_12_11['novos'] == -1, 1, np.where(d_12_11['novos'] !=  -1, 0,0))
+d_12_11['v1'] = d_12_11['novo_bi'] * d_12_11['pci_x']
+d_12_11['v2'] = d_12_11['novo_bi'] * d_12_11['degrees_x']
+d_12_11['v3'] = d_12_11['retired_bi'] * d_12_11['pci_y']
+d_12_11['v4'] = d_12_11['retired_bi'] * d_12_11['degrees_y']
+d_12_11['v5'] = d_12_11['v1'] - d_12_11['v3']
+d_12_11['v6'] = d_12_11['v2'] - d_12_11['v4']
+d_12_11['v7'] = d_12_11['v5'] * d_12_11['v6']
+d_12_11_pivot = (d_12_11.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_13_12['novo_bi'] = np.where(d_13_12['novos'] == 1, 1, np.where(d_13_12['novos'] !=  1, 0,0))
+d_13_12['retired_bi'] = np.where(d_13_12['novos'] == -1, 1, np.where(d_13_12['novos'] !=  -1, 0,0))
+d_13_12['v1'] = d_13_12['novo_bi'] * d_13_12['pci_x']
+d_13_12['v2'] = d_13_12['novo_bi'] * d_13_12['degrees_x']
+d_13_12['v3'] = d_13_12['retired_bi'] * d_13_12['pci_y']
+d_13_12['v4'] = d_13_12['retired_bi'] * d_13_12['degrees_y']
+d_13_12['v5'] = d_13_12['v1'] - d_13_12['v3']
+d_13_12['v6'] = d_13_12['v2'] - d_13_12['v4']
+d_13_12['v7'] = d_13_12['v5'] * d_13_12['v6']
+d_13_12_pivot = (d_13_12.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_14_13['novo_bi'] = np.where(d_14_13['novos'] == 1, 1, np.where(d_14_13['novos'] !=  1, 0,0))
+d_14_13['retired_bi'] = np.where(d_14_13['novos'] == -1, 1, np.where(d_14_13['novos'] !=  -1, 0,0))
+d_14_13['v1'] = d_14_13['novo_bi'] * d_14_13['pci_x']
+d_14_13['v2'] = d_14_13['novo_bi'] * d_14_13['degrees_x']
+d_14_13['v3'] = d_14_13['retired_bi'] * d_14_13['pci_y']
+d_14_13['v4'] = d_14_13['retired_bi'] * d_14_13['degrees_y']
+d_14_13['v5'] = d_14_13['v1'] - d_14_13['v3']
+d_14_13['v6'] = d_14_13['v2'] - d_14_13['v4']
+d_14_13['v7'] = d_14_13['v5'] * d_14_13['v6']
+d_14_13_pivot = (d_14_13.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_15_14['novo_bi'] = np.where(d_15_14['novos'] == 1, 1, np.where(d_15_14['novos'] !=  1, 0,0))
+d_15_14['retired_bi'] = np.where(d_15_14['novos'] == -1, 1, np.where(d_15_14['novos'] !=  -1, 0,0))
+d_15_14['v1'] = d_15_14['novo_bi'] * d_15_14['pci_x']
+d_15_14['v2'] = d_15_14['novo_bi'] * d_15_14['degrees_x']
+d_15_14['v3'] = d_15_14['retired_bi'] * d_15_14['pci_y']
+d_15_14['v4'] = d_15_14['retired_bi'] * d_15_14['degrees_y']
+d_15_14['v5'] = d_15_14['v1'] - d_15_14['v3']
+d_15_14['v6'] = d_15_14['v2'] - d_15_14['v4']
+d_15_14['v7'] = d_15_14['v5'] * d_15_14['v6']
+d_15_14_pivot = (d_15_14.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_16_15['novo_bi'] = np.where(d_16_15['novos'] == 1, 1, np.where(d_16_15['novos'] !=  1, 0,0))
+d_16_15['retired_bi'] = np.where(d_16_15['novos'] == -1, 1, np.where(d_16_15['novos'] !=  -1, 0,0))
+d_16_15['v1'] = d_16_15['novo_bi'] * d_16_15['pci_x']
+d_16_15['v2'] = d_16_15['novo_bi'] * d_16_15['degrees_x']
+d_16_15['v3'] = d_16_15['retired_bi'] * d_16_15['pci_y']
+d_16_15['v4'] = d_16_15['retired_bi'] * d_16_15['degrees_y']
+d_16_15['v5'] = d_16_15['v1'] - d_16_15['v3']
+d_16_15['v6'] = d_16_15['v2'] - d_16_15['v4']
+d_16_15['v7'] = d_16_15['v5'] * d_16_15['v6']
+d_16_15_pivot = (d_16_15.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_17_16['novo_bi'] = np.where(d_17_16['novos'] == 1, 1, np.where(d_17_16['novos'] !=  1, 0,0))
+d_17_16['retired_bi'] = np.where(d_17_16['novos'] == -1, 1, np.where(d_17_16['novos'] !=  -1, 0,0))
+d_17_16['v1'] = d_17_16['novo_bi'] * d_17_16['pci_x']
+d_17_16['v2'] = d_17_16['novo_bi'] * d_17_16['degrees_x']
+d_17_16['v3'] = d_17_16['retired_bi'] * d_17_16['pci_y']
+d_17_16['v4'] = d_17_16['retired_bi'] * d_17_16['degrees_y']
+d_17_16['v5'] = d_17_16['v1'] - d_17_16['v3']
+d_17_16['v6'] = d_17_16['v2'] - d_17_16['v4']
+d_17_16['v7'] = d_17_16['v5'] * d_17_16['v6']
+d_17_16_pivot = (d_17_16.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+d_18_17['novo_bi'] = np.where(d_18_17['novos'] == 1, 1, np.where(d_18_17['novos'] !=  1, 0,0))
+d_18_17['retired_bi'] = np.where(d_18_17['novos'] == -1, 1, np.where(d_18_17['novos'] !=  -1, 0,0))
+d_18_17['v1'] = d_18_17['novo_bi'] * d_18_17['pci_x']
+d_18_17['v2'] = d_18_17['novo_bi'] * d_18_17['degrees_x']
+d_18_17['v3'] = d_18_17['retired_bi'] * d_18_17['pci_y']
+d_18_17['v4'] = d_18_17['retired_bi'] * d_18_17['degrees_y']
+d_18_17['v5'] = d_18_17['v1'] - d_18_17['v3']
+d_18_17['v6'] = d_18_17['v2'] - d_18_17['v4']
+d_18_17['v7'] = d_18_17['v5'] * d_18_17['v6']
+d_18_17_pivot = (d_18_17.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
+tudo=pd.concat([d_96_95_pivot,d_97_96_pivot, d_98_97_pivot, d_99_98_pivot, d_00_99_pivot,d_01_00_pivot,d_02_01_pivot,d_03_02_pivot,d_04_03_pivot,d_05_04_pivot,d_06_05_pivot,d_07_06_pivot,d_08_07_pivot,d_09_08_pivot,d_10_09_pivot,d_11_10_pivot,d_12_11_pivot,d_13_12_pivot,d_14_13_pivot,d_15_14_pivot,d_16_15_pivot,d_17_16_pivot,d_18_17_pivot], axis=0)
+tudo=pd.concat([d_96_95_pivot,d_97_96_pivot, d_98_97_pivot, d_99_98_pivot, d_00_99_pivot,d_01_00_pivot,d_02_01_pivot,d_03_02_pivot,d_04_03_pivot,d_05_04_pivot,d_06_05_pivot,d_07_06_pivot,d_08_07_pivot,d_09_08_pivot,d_10_09_pivot,d_11_10_pivot,d_12_11_pivot,d_13_12_pivot,d_14_13_pivot,d_15_14_pivot,d_16_15_pivot,d_17_16_pivot,d_18_17_pivot], axis=0)
+intensity=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/indicador_mar_22/intensity.xlsx")
+gdp_2018=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/indicador_mar_22/gdp.xlsx")
+policy=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/new/policy.xlsx")
+alternativa = (tudo.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v5','v6','v7') , aggfunc = 'sum'))
+alternativa = pd.DataFrame(alternativa)
+alternativa
+intensity.rename(columns ={'year' : 'year_x'}, inplace = True)
+intensity
+tent=alternativa.merge(intensity, on=('location_code', 'year_x'), how='inner')
+tent
+tent2=tent.merge(gdp_2018, on=('location_code'), how='inner')
+tent3=tent2.merge(policy, on=('location_code'), how='inner')
+tent3['gsc']=tent3['p_d_x'] /tent3['int']
+tent3['gdplog']= np.log(tent3['gdp_2018'])
