@@ -5,22 +5,67 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-dados_novos = pd.read_stata("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/country_hsproduct4digit_year.dta")
+dados = pd.read_stata("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/country_hsproduct4digit_year.dta")
 PUR_deg=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/deg_pur.xlsx")
-intensity=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/indicador_mar_22/intensity.xlsx")
-gdp_2018=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/indicador_mar_22/gdp.xlsx")
-policy=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/new/policy.xlsx")
-region=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/indicador_mar_22/reg.xlsx")
-SPI18=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/SPI.xlsx")
-eci18=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/eci.xlsx")
+complementares=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/indicador_mar_22/DADOS COMPLEMENTARES.xlsx")
 
-dados_novos = dados_novos.iloc[:,[2,5,16,17,18]]
+
+#LIMPEZA DE DADOS
+dados = dados.iloc[:,[2,5,16,17,18]]
+dados=dados.loc[((dados.location_code != "ANT") & (dados.location_code != "ATF") & (dados.location_code != "ESH") & (dados.location_code != "WLF") & (dados.location_code != "SCG") & (dados.location_code != "SRB") & (dados.location_code != "ATA") & (dados.location_code != "HMD") & (dados.location_code != "MYT") & (dados.location_code != "UMI") & (dados.location_code != "VAT") & (dados.location_code != "BVT") & (dados.location_code != "SGS") & (dados.location_code != "CUW") & (dados.location_code != "VIR") & (dados.location_code != "SXM") & (dados.location_code != "SSD") & (dados.location_code != "GLP") & (dados.location_code != "GUF") & (dados.location_code != "MTQ") & (dados.location_code != "REU") & (dados.location_code != "MNE") & (dados.location_code != "BES") & (dados.location_code != "BLM"))]
+dados_novos=dados.loc[((dados.year != 1994) & (dados.year != 2020) & (dados.year != 2019))]
+
+#PREPARACAO DA BASE
 PUR_deg['hs_product_code'] = PUR_deg['hs_product_code'].astype (str)
 dados=dados_novos.merge(PUR_deg, on="hs_product_code", how = "inner")
-dados=dados.loc[((dados.location_code != "ANT") & (dados.location_code != "ATF") & (dados.location_code != "ESH") & (dados.location_code != "WLF") & (dados.location_code != "SCG") & (dados.location_code != "SRB") & (dados.location_code != "ATA") & (dados.location_code != "HMD") & (dados.location_code != "MYT") & (dados.location_code != "UMI") & (dados.location_code != "VAT") & (dados.location_code != "BVT") & (dados.location_code != "SGS") & (dados.location_code != "CUW") & (dados.location_code != "VIR") & (dados.location_code != "SXM") & (dados.location_code != "SSD") & (dados.location_code != "GLP") & (dados.location_code != "GUF") & (dados.location_code != "MTQ") & (dados.location_code != "REU") & (dados.location_code != "MNE") & (dados.location_code != "BES") & (dados.location_code != "BLM"))]
-dados=dados.loc[((dados.year != 1994) & (dados.year != 2020) & (dados.year != 2019))]
 dados['rca'] = np.where(dados['export_rca']> 1, 1, 0)
 dados['p_d']= dados['pci'] * dados['degrees'] * dados['rca']
+
+#PASSO 1 - VALIDACAO
+consolidado = (dados.pivot_table(index = ['year', 'location_code'],values = 'p_d', aggfunc = 'sum'))
+gsc=consolidado.merge(complementares, on=('year','location_code'), how='outer')
+gsc_1=gsc.dropna()
+gsc_1=gsc_1.loc[(gsc_1.int != '..')]
+gsc_1 ['gsc'] = gsc_1['p_d'] / gsc_1['int']
+###aqui
+gsc_18=gsc_1_2018.merge(gdp18, on=('location_code'), how='inner')
+gsc_18_1=gsc_18.merge(SPI18, on=('location_code'), how='inner')
+gsc_18_2=gsc_18_1.merge(eci18, on=('location_code'), how='inner')
+gsc_2=gsc_dif.merge(region, on='location_code', how='outer')
+gsc_2=gsc_2.dropna()
+gsc_2=gsc_2.rename(columns={'Region.1':'reg'})
+
+gsc_18_2['rank_ind']=gsc_18_2['gsc'].rank()
+gsc_18_2['rank_spi']=gsc_18_2['SPI2018'].rank()
+gsc_18_2['rank_gdp']=gsc_18_2['gdp_18'].rank()
+gsc_18_2['rank_gdp']=gsc_18_2['gdp_18'].rank()
+
+#FIGURA 1
+x = gsc_18_2['gdp_18']
+y = gsc_18_2['gsc']
+fig, ax = plt.subplots()
+ax.scatter(x, y, c="green", alpha=0.5)
+ax.set_xlabel("GDP per capita")
+ax.set_ylabel("Green Structural Change Indicator")
+
+# PADROES
+
+#FIGURA 2 - QUADRANTES
+gsc_2_2018=gsc_18_2.loc[(gsc_18_2.year == 2018)]
+gsc_2_2000=gsc_1.loc[(gsc_1.year == 2000)]
+gsc_dif= gsc_2_2018.merge(gsc_2_2000, on= 'location_code', how = 'inner')
+gsc_dif['dif_int'] = (gsc_dif['int_x'] - gsc_dif['int_y'])/gsc_dif['int_y']
+gsc_dif['dif_pd'] = (gsc_dif['p_d_x'] - gsc_dif['p_d_y'])/gsc_dif['p_d_y']
+fig = px.scatter(gsc_3, x = "dif_pd", y = "dif_int",
+                 size = "gdp_18", color = "Region",
+                 hover_name="location_code", log_x=False, size_max=20)
+fig.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink', title='Variation in carbon intensity 2018-2000')
+fig.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink', title='Variation in connected complexity 2018-2000')
+fig.update_xaxes(range=[-0.8, 0.8])
+fig.update_yaxes(range=[-0.8, 0.8])
+fig.show()
+
+
 
 dados
 d_18 = dados.loc[(dados.year == 2018)]
