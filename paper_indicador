@@ -3,7 +3,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
+import plotly.express as px
 
 dados = pd.read_stata("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/country_hsproduct4digit_year.dta")
 PUR_deg=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/deg_pur.xlsx")
@@ -35,7 +35,7 @@ gsc_3_18['rank_spi']=gsc_3_18['spi_18'].rank(axis=0, ascending=False, method = '
 gsc_3_18['rank_gdp']=gsc_3_18['gdp_18'].rank(axis=0, ascending=False, method = 'max')
 gsc_3_18['rank_eci']=gsc_3_18['eci_18'].rank(axis=0, ascending=False, method = 'max')
 gsc_3_18
-AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+
 #FIGURA 1
 x = gsc_3_18['gdp_18']
 y = gsc_3_18['gsc']
@@ -44,23 +44,26 @@ ax.scatter(x, y, c="green", alpha=0.5)
 ax.set_xlabel("GDP per capita")
 ax.set_ylabel("Green Structural Change Indicator")
 
+# outra versao
+fig = px.scatter(gsc_3_18, x='rank_eci', y='rank_ind', trendline="ols")
+fig
+
 # PADROES
 
 #FIGURA 2 - QUADRANTES
-gsc_2_2018=gsc_18_2.loc[(gsc_18_2.year == 2018)]
-gsc_2_2000=gsc_1.loc[(gsc_1.year == 2000)]
-gsc_dif= gsc_2_2018.merge(gsc_2_2000, on= 'location_code', how = 'inner')
+gsc_3_18=gsc_3.loc[(gsc_3.year == 2018)]
+gsc_3_00=gsc_3.loc[(gsc_3.year == 2000)]
+gsc_dif= gsc_3_18.merge(gsc_3_00, on= 'location_code', how = 'inner')
 gsc_dif['dif_int'] = (gsc_dif['int_x'] - gsc_dif['int_y'])/gsc_dif['int_y']
 gsc_dif['dif_pd'] = (gsc_dif['p_d_x'] - gsc_dif['p_d_y'])/gsc_dif['p_d_y']
-fig = px.scatter(gsc_3, x = "dif_pd", y = "dif_int",
-                 size = "gdp_18", color = "Region",
+fig = px.scatter(gsc_dif, x = "dif_pd", y = "dif_int",
+                 size = "gdp_18_x", color = "reg_name_x",
                  hover_name="location_code", log_x=False, size_max=20)
 fig.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink', title='Variation in carbon intensity 2018-2000')
 fig.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink', title='Variation in connected complexity 2018-2000')
 fig.update_xaxes(range=[-0.8, 0.8])
 fig.update_yaxes(range=[-0.8, 0.8])
 fig.show()
-
 
 
 dados
