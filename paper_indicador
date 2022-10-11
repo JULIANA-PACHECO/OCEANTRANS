@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import plotly.express as px
+import pylab 
 
 dados = pd.read_stata("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/country_hsproduct4digit_year.dta")
 PUR_deg=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/deg_pur.xlsx")
@@ -64,7 +65,72 @@ fig.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink', titl
 fig.update_xaxes(range=[-0.8, 0.8])
 fig.update_yaxes(range=[-0.8, 0.8])
 fig.show()
+#com violin
+fig = px.scatter(gsc_dif, x = "dif_pd", y = "dif_int", marginal_y="violin", marginal_x="violin",
+                 size = "gdp_18_x", color = "reg_name_x", template="simple_white",
+                 hover_name= "location_code", log_x=False, size_max=20)
 
+
+
+fig.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+fig.update_yaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
+fig.show()
+
+# trajetorias
+gsc_DEU = gsc_3.loc[(gsc_3.location_code == 'DEU')]
+gsc_JPN = gsc_3.loc[(gsc_3.location_code == 'JPN')]
+gsc_KOR = gsc_3.loc[(gsc_3.location_code == 'KOR')]
+gsc_IND = gsc_3.loc[(gsc_3.location_code == 'IND')]
+gsc_USA = gsc_3.loc[(gsc_3.location_code == 'USA')]
+gsc_CHN = gsc_3.loc[(gsc_3.location_code == 'CHN')]
+gsc_POL = gsc_3.loc[(gsc_3.location_code == 'POL')]
+gsc_EGY = gsc_3.loc[(gsc_3.location_code == 'EGY')]
+gsc_ZAF = gsc_3.loc[(gsc_3.location_code == 'ZAF')]
+
+a=gsc_DEU.int
+b=gsc_DEU.p_d
+c=gsc_DEU.year
+d=gsc_JPN.int
+e=gsc_JPN.p_d
+f=gsc_KOR.int
+g=gsc_KOR.p_d
+h=gsc_IND.int
+i=gsc_IND.p_d
+j=gsc_USA.int
+k=gsc_USA.p_d
+l=gsc_CHN.int
+m=gsc_CHN.p_d
+n=gsc_POL.int
+o=gsc_POL.p_d
+p=gsc_EGY.int
+q=gsc_EGY.p_d
+r=gsc_ZAF.int
+s=gsc_ZAF.p_d
+
+plt.scatter(a,b)
+plt.scatter(d,e)
+plt.scatter(f,g)
+plt.scatter(h,i)
+plt.scatter(j,k)
+plt.scatter(l,m)
+plt.scatter(n,o)
+plt.scatter(p,q)
+plt.scatter(r,s)
+pylab.plot(a,b,"r--", color ='blue')
+pylab.plot(d,e,"r--", color ='orange')
+pylab.plot(f,g,"r--", color ='g')
+pylab.plot(h,i,"r--", color ='r')
+pylab.plot(j,k,"r--", color ='purple')
+pylab.plot(l,m,"r--", color ='brown')
+pylab.plot(n,o,"r--", color ='pink')
+pylab.plot(p,q,"r--", color ='grey')
+pylab.plot(r,s,"r--", color ='yellow')
+plt.grid()
+
+#alternativa
+gsc_padroes = gsc_3.loc[((gsc_3.location_code == ('KOR'))| (gsc_3.location_code == ('JPN')) | (gsc_3.location_code == ('IND'))| (gsc_3.location_code == ('USA'))| (gsc_3.location_code == ('ZAF'))| (gsc_3.location_code == ('POL'))| (gsc_3.location_code == ('CHN'))| (gsc_3.location_code == ('DEU'))| (gsc_3.location_code == ('EGY')))]
+fig = px.scatter(gsc_padroes, x = 'int' , y = 'p_d', color= 'location_code', trendline = 'ols', text='year')
+fig.show()
 
 dados
 d_18 = dados.loc[(dados.year == 2018)]
