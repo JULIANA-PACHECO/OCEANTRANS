@@ -132,6 +132,15 @@ gsc_padroes = gsc_3.loc[((gsc_3.location_code == ('KOR'))| (gsc_3.location_code 
 fig = px.scatter(gsc_padroes, x = 'int' , y = 'p_d', color= 'location_code', trendline = 'ols', text='year')
 fig.show()
 
+#extremos
+gsc_KEN = gsc_1.loc[(gsc_1.location_code == 'KEN')]
+gsc_ETH = gsc_1.loc[(gsc_1.location_code == 'ETH')]
+gsc_ESP = gsc_1.loc[(gsc_1.location_code == 'ESP')]
+gsc_NPL = gsc_1.loc[(gsc_1.location_code == 'NPL')]
+gsc_CRI = gsc_1.loc[(gsc_1.location_code == 'CRI')]
+gsc_SWE = gsc_1.loc[(gsc_1.location_code == 'SWE')]   
+
+
 dados
 d_18 = dados.loc[(dados.year == 2018)]
 d_17 = dados.loc[(dados.year == 2017)]
