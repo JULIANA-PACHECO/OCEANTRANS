@@ -138,8 +138,17 @@ gsc_ETH = gsc_1.loc[(gsc_1.location_code == 'ETH')]
 gsc_ESP = gsc_1.loc[(gsc_1.location_code == 'ESP')]
 gsc_NPL = gsc_1.loc[(gsc_1.location_code == 'NPL')]
 gsc_CRI = gsc_1.loc[(gsc_1.location_code == 'CRI')]
-gsc_SWE = gsc_1.loc[(gsc_1.location_code == 'SWE')]   
+gsc_SWE = gsc_1.loc[(gsc_1.location_code == 'SWE')]  
 
+#exemplo de grafico_ os graficos do artigo foram feitos no excel
+fig, ax1 = plt.subplots() 
+ax2=ax1.twinx()
+ax1.plot(gsc_KEN['year'],gsc_KEN['gsc'], color ='r', label='gsc')
+ax1.plot(gsc_KEN['year'], gsc_KEN['p_d'], color ='b', label='p_d')
+ax2.plot(gsc_KEN['year'],gsc_KEN['int'], color ='g', label='int')
+ax1.set_ylabel('gsc, p_d') 
+ax2.set_ylabel('intensity', color ='g') 
+plt.show()
 
 dados
 d_18 = dados.loc[(dados.year == 2018)]
