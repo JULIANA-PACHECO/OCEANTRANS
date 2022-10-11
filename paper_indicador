@@ -5,6 +5,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import plotly.express as px
 import pylab 
+import statsmodels
+import statsmodels.api as sm
+from stargazer.stargazer import Stargazer
 
 dados = pd.read_stata("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/country_hsproduct4digit_year.dta")
 PUR_deg=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/deg_pur.xlsx")
@@ -69,7 +72,6 @@ fig.show()
 fig = px.scatter(gsc_dif, x = "dif_pd", y = "dif_int", marginal_y="violin", marginal_x="violin",
                  size = "gdp_18_x", color = "reg_name_x", template="simple_white",
                  hover_name= "location_code", log_x=False, size_max=20)
-
 
 
 fig.update_xaxes(zeroline=True, zerolinewidth=2, zerolinecolor='LightPink')
@@ -150,7 +152,8 @@ ax1.set_ylabel('gsc, p_d')
 ax2.set_ylabel('intensity', color ='g') 
 plt.show()
 
-dados
+#dados
+dados=dados3
 d_18 = dados.loc[(dados.year == 2018)]
 d_17 = dados.loc[(dados.year == 2017)]
 d_16 = dados.loc[(dados.year == 2016)]
@@ -175,9 +178,6 @@ d_98 = dados.loc[(dados.year == 1998)]
 d_97 = dados.loc[(dados.year == 1997)]
 d_96 = dados.loc[(dados.year == 1996)]
 d_95 = dados.loc[(dados.year == 1995)]
-
-
-
 d_18_17 = d_18.merge(d_17, on = ('location_code', 'hs_product_code'), how = "outer")
 d_17_16 = d_17.merge(d_16, on = ('location_code', 'hs_product_code'), how = "outer")
 d_16_15 = d_16.merge(d_15, on = ('location_code', 'hs_product_code'), how = "outer")
@@ -202,29 +202,29 @@ d_98_97 = d_98.merge(d_97, on = ('location_code', 'hs_product_code'), how = "out
 d_97_96 = d_97.merge(d_96, on = ('location_code', 'hs_product_code'), how = "outer")
 d_96_95 = d_96.merge(d_95, on = ('location_code', 'hs_product_code'), how = "outer")
 
-d_18_17['novos'] =d_18_17.rca_x - d_18_17.rca_y
-d_17_16['novos'] =d_17_16.rca_x - d_17_16.rca_y
-d_16_15['novos'] =d_16_15.rca_x - d_16_15.rca_y
-d_15_14['novos'] =d_15_14.rca_x - d_15_14.rca_y
-d_14_13['novos'] =d_14_13.rca_x - d_14_13.rca_y
-d_13_12['novos'] =d_13_12.rca_x - d_13_12.rca_y
-d_12_11['novos'] =d_12_11.rca_x - d_12_11.rca_y
-d_11_10['novos'] =d_11_10.rca_x - d_11_10.rca_y
-d_10_09['novos'] =d_10_09.rca_x - d_10_09.rca_y
-d_09_08['novos'] =d_09_08.rca_x - d_09_08.rca_y
-d_08_07['novos'] =d_08_07.rca_x - d_08_07.rca_y
-d_07_06['novos'] =d_07_06.rca_x - d_07_06.rca_y
-d_06_05['novos'] =d_06_05.rca_x - d_06_05.rca_y
-d_05_04['novos'] =d_05_04.rca_x - d_05_04.rca_y
-d_04_03['novos'] =d_04_03.rca_x - d_04_03.rca_y
-d_03_02['novos'] =d_03_02.rca_x - d_03_02.rca_y
-d_02_01['novos'] =d_02_01.rca_x - d_02_01.rca_y
-d_01_00['novos'] =d_01_00.rca_x - d_01_00.rca_y
-d_00_99['novos'] =d_00_99.rca_x - d_00_99.rca_y
-d_99_98['novos'] =d_99_98.rca_x - d_99_98.rca_y
-d_98_97['novos'] =d_98_97.rca_x - d_98_97.rca_y
-d_97_96['novos'] =d_97_96.rca_x - d_97_96.rca_y
-d_96_95['novos'] =d_96_95.rca_x - d_96_95.rca_y
+d_18_17['novos'] =d_18_17.export_rca_x - d_18_17.export_rca_y
+d_17_16['novos'] =d_17_16.export_rca_x - d_17_16.export_rca_y
+d_16_15['novos'] =d_16_15.export_rca_x - d_16_15.export_rca_y
+d_15_14['novos'] =d_15_14.export_rca_x - d_15_14.export_rca_y
+d_14_13['novos'] =d_14_13.export_rca_x - d_14_13.export_rca_y
+d_13_12['novos'] =d_13_12.export_rca_x - d_13_12.export_rca_y
+d_12_11['novos'] =d_12_11.export_rca_x - d_12_11.export_rca_y
+d_11_10['novos'] =d_11_10.export_rca_x - d_11_10.export_rca_y
+d_10_09['novos'] =d_10_09.export_rca_x - d_10_09.export_rca_y
+d_09_08['novos'] =d_09_08.export_rca_x - d_09_08.export_rca_y
+d_08_07['novos'] =d_08_07.export_rca_x - d_08_07.export_rca_y
+d_07_06['novos'] =d_07_06.export_rca_x - d_07_06.export_rca_y
+d_06_05['novos'] =d_06_05.export_rca_x - d_06_05.export_rca_y
+d_05_04['novos'] =d_05_04.export_rca_x - d_05_04.export_rca_y
+d_04_03['novos'] =d_04_03.export_rca_x - d_04_03.export_rca_y
+d_03_02['novos'] =d_03_02.export_rca_x - d_03_02.export_rca_y
+d_02_01['novos'] =d_02_01.export_rca_x - d_02_01.export_rca_y
+d_01_00['novos'] =d_01_00.export_rca_x - d_01_00.export_rca_y
+d_00_99['novos'] =d_00_99.export_rca_x - d_00_99.export_rca_y
+d_99_98['novos'] =d_99_98.export_rca_x - d_99_98.export_rca_y
+d_98_97['novos'] =d_98_97.export_rca_x - d_98_97.export_rca_y
+d_97_96['novos'] =d_97_96.export_rca_x - d_97_96.export_rca_y
+d_96_95['novos'] =d_96_95.export_rca_x - d_96_95.export_rca_y
 d_96_95['novo_bi'] = np.where(d_96_95['novos'] == 1, 1, np.where(d_96_95['novos'] !=  1, 0,0))
 d_96_95['retired_bi'] = np.where(d_96_95['novos'] == -1, 1, np.where(d_96_95['novos'] !=  -1, 0,0))
 d_96_95['v1'] = d_96_95['novo_bi'] * d_96_95['pci_x']
@@ -456,18 +456,36 @@ d_18_17['v6'] = d_18_17['v2'] - d_18_17['v4']
 d_18_17['v7'] = d_18_17['v5'] * d_18_17['v6']
 d_18_17_pivot = (d_18_17.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v1','v2','v3','v4','v5','v6','v7'), aggfunc = 'sum'))
 tudo=pd.concat([d_96_95_pivot,d_97_96_pivot, d_98_97_pivot, d_99_98_pivot, d_00_99_pivot,d_01_00_pivot,d_02_01_pivot,d_03_02_pivot,d_04_03_pivot,d_05_04_pivot,d_06_05_pivot,d_07_06_pivot,d_08_07_pivot,d_09_08_pivot,d_10_09_pivot,d_11_10_pivot,d_12_11_pivot,d_13_12_pivot,d_14_13_pivot,d_15_14_pivot,d_16_15_pivot,d_17_16_pivot,d_18_17_pivot], axis=0)
-tudo=pd.concat([d_96_95_pivot,d_97_96_pivot, d_98_97_pivot, d_99_98_pivot, d_00_99_pivot,d_01_00_pivot,d_02_01_pivot,d_03_02_pivot,d_04_03_pivot,d_05_04_pivot,d_06_05_pivot,d_07_06_pivot,d_08_07_pivot,d_09_08_pivot,d_10_09_pivot,d_11_10_pivot,d_12_11_pivot,d_13_12_pivot,d_14_13_pivot,d_15_14_pivot,d_16_15_pivot,d_17_16_pivot,d_18_17_pivot], axis=0)
-intensity=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/indicador_mar_22/intensity.xlsx")
-gdp_2018=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/indicador_mar_22/gdp.xlsx")
-policy=pd.read_excel("C:/Users/juliana.barbosa/OneDrive - LNEG - Laboratorio Nacional de Energia e Geologia/Documents/new/policy.xlsx")
 alternativa = (tudo.pivot_table(index = ['year_x', 'location_code'],values = ('p_d_x','v5','v6','v7') , aggfunc = 'sum'))
 alternativa = pd.DataFrame(alternativa)
-alternativa
 intensity.rename(columns ={'year' : 'year_x'}, inplace = True)
-intensity
 tent=alternativa.merge(intensity, on=('location_code', 'year_x'), how='inner')
-tent
-tent2=tent.merge(gdp_2018, on=('location_code'), how='inner')
-tent3=tent2.merge(policy, on=('location_code'), how='inner')
-tent3['gsc']=tent3['p_d_x'] /tent3['int']
-tent3['gdplog']= np.log(tent3['gdp_2018'])
+tent2=tent.merge(complementares, on=('location_code'), how='inner')
+tent2['gsc']=tent2['p_d_x'] /tent2['int']
+tent2['gdplog']= np.log(tent2['gdp_18'])
+TAB1=tent2.describe()
+TAB2=tent2[['v5','v6','v7','int','policy','gdplog','gsc','p_d_x']].corr()
+
+x1=pd.DataFrame(tent2[['v5','v6','v7','int','gdplog','year_x']])
+x2=pd.DataFrame(tent2[['v5','v6','v7','int','policy','gdplog','year_x']])
+x3=pd.DataFrame(tent2[['v5','v6','v7','gdplog','year_x']])
+x4=pd.DataFrame(tent2[['v5','v6','v7','policy','gdplog','year_x']])
+
+y1=pd.DataFrame(tent2[['gsc']])
+y2=pd.DataFrame(tent2[['p_d_x']])
+y3=pd.DataFrame(tent2[['int']])
+
+model1 = sm.OLS(y1, x1)
+results_1 = model1.fit()
+model2 = sm.OLS(y1, x2)
+results_2 = model2.fit()
+model3 = sm.OLS(y2, x1)
+results_3 = model3.fit()
+model4 = sm.OLS(y2, x2)
+results_4 = model4.fit()
+model5 = sm.OLS(y3, x3)
+results_5 = model5.fit()
+model6 = sm.OLS(y3, x4)
+results_6 = model6.fit()
+stargazer = Stargazer([results_1,results_2,results_3,results_4,results_5,results_6])
+stargazer
